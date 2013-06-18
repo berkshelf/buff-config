@@ -1,3 +1,4 @@
+require 'json'
 require 'buff/config'
 
 module Buff
@@ -32,7 +33,7 @@ module Buff
       # @return [Buff::Config::JSON]
       def from_json(*args)
         super
-      rescue JSON::ParseError => ex
+      rescue ::JSON::ParserError => ex
         raise Errors::InvalidConfig, ex
       end
 
