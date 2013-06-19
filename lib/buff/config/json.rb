@@ -44,7 +44,7 @@ module Buff
 
         FileUtils.mkdir_p(File.dirname(destination))
         File.open(destination, 'w+') do |f|
-          f.write(self.to_json(pretty: true))
+          f.write(::JSON.pretty_generate(self.to_hash))
         end
       end
 
