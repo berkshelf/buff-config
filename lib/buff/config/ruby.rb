@@ -64,8 +64,6 @@ module Buff
         hash = Buff::Config::Ruby::Evaluator.parse(contents)
         mass_assign(hash)
         self
-      rescue Exception => ex
-        raise Errors::InvalidConfig, ex
       end
 
       # Convert the result to Ruby.
@@ -127,6 +125,8 @@ module Buff
           # @param [String] contents
           def initialize(contents)
             instance_eval(contents)
+          rescue Exception => ex
+            raise Errors::InvalidConfig, ex
           end
 
           # @see {Buff::Config::Ruby.platform_specific_path}
