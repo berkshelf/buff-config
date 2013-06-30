@@ -3,6 +3,45 @@ require 'buff/config'
 module Buff
   module Config
     class Ruby < Config::Base
+      class Evaluator
+        class << self
+          # Parse the contents of the Ruby file into a Hash.
+          #
+          # @param [String] contents
+          #
+          # @return [Hash]
+          def parse(contents)
+            self.new(contents).send(:__configuration)
+          end
+        end
+
+        # @param [String] contents
+        def initialize(contents)
+          instance_eval(contents)
+        rescue Exception => ex
+          raise Errors::InvalidConfig, ex
+        end
+
+        # @see {Buff::Config::Ruby.platform_specific_path}
+        def platform_specific_path(path)
+          Buff::Config::Ruby.platform_specific_path(path)
+        end
+
+        def method_missing(m, *args, &block)
+          if args.size > 0
+            __configuration[m.to_sym] = (args.length == 1) ? args[0] : args
+          else
+            super
+          end
+        end
+
+        private
+
+          def __configuration
+            @__configuration ||= {}
+          end
+      end
+
       class << self
         # @param [String] data
         #
@@ -39,6 +78,7 @@ module Buff
         end
 
         private
+
           # Convert a unixy filepath to a windowsy filepath. Swaps forward slashes for
           # double backslashes
           #
@@ -84,7 +124,8 @@ module Buff
 
       def save(destination = self.path)
         if destination.nil?
-          raise Errors::ConfigSaveError, "Cannot save configuration without a destination. Provide one to save or set one on the object."
+          raise Errors::ConfigSaveError, "Cannot save configuration without a destination. " +
+            "Provide one to save or set one on the object."
         end
 
         FileUtils.mkdir_p(File.dirname(destination))
@@ -102,50 +143,13 @@ module Buff
       end
 
       private
+
         def find_constant(name)
           Module.constants.find do |const|
             begin
               Module.const_get(const) == name
             rescue NameError; end
           end
-        end
-
-        class Evaluator
-          class << self
-            # Parse the contents of the Ruby file into a Hash.
-            #
-            # @param [String] contents
-            #
-            # @return [Hash]
-            def parse(contents)
-              self.new(contents).send(:__configuration)
-            end
-          end
-
-          # @param [String] contents
-          def initialize(contents)
-            instance_eval(contents)
-          rescue Exception => ex
-            raise Errors::InvalidConfig, ex
-          end
-
-          # @see {Buff::Config::Ruby.platform_specific_path}
-          def platform_specific_path(path)
-            Buff::Config::Ruby.platform_specific_path(path)
-          end
-
-          def method_missing(m, *args, &block)
-            if args.size > 0
-              __configuration[m.to_sym] = (args.length == 1) ? args[0] : args
-            else
-              super
-            end
-          end
-
-          private
-            def __configuration
-              @__configuration ||= {}
-            end
         end
     end
   end
