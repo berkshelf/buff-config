@@ -120,7 +120,7 @@ module Buff
             #
             # @return [Hash]
             def parse(contents)
-              self.new(contents).result
+              self.new(contents).send(:__configuration)
             end
           end
 
@@ -134,22 +134,17 @@ module Buff
             Buff::Config::Ruby.platform_specific_path(path)
           end
 
-          # @return [Hash]
-          def result
-            hash
-          end
-
           def method_missing(m, *args, &block)
             if args.size > 0
-              hash[m.to_sym] = (args.length == 1) ? args[0] : args
+              __configuration[m.to_sym] = (args.length == 1) ? args[0] : args
             else
               super
             end
           end
 
           private
-            def hash
-              @hash ||= {}
+            def __configuration
+              @__configuration ||= {}
             end
         end
     end
