@@ -11,12 +11,13 @@ module Buff
           #
           # @return [Hash]
           def parse(contents)
-            self.new(contents).send(:__configuration)
+            self.new(contents).send(:attributes)
           end
         end
 
         # @param [String] contents
         def initialize(contents)
+          @attributes = Hash.new
           instance_eval(contents)
         rescue Exception => ex
           raise Errors::InvalidConfig, ex
@@ -29,7 +30,7 @@ module Buff
 
         def method_missing(m, *args, &block)
           if args.size > 0
-            __configuration[m.to_sym] = (args.length == 1) ? args[0] : args
+            attributes[m.to_sym] = (args.length == 1) ? args[0] : args
           else
             super
           end
@@ -37,9 +38,7 @@ module Buff
 
         private
 
-          def __configuration
-            @__configuration ||= {}
-          end
+          attr_reader :attributes
       end
 
       class << self
