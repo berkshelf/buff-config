@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "buff-config"
   spec.version       = Buff::Config::VERSION
   spec.authors       = ["Jamie Winsor"]
-  spec.email         = ["reset@riotgames.com"]
+  spec.email         = ["jamie@vialstudios.com"]
   spec.description   = %q{A simple configuration class}
   spec.summary       = spec.description
   spec.homepage      = "https://github.com/RiotGames/buff-config"
