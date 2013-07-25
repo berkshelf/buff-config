@@ -12,6 +12,13 @@ module Buff
           new.from_json(data)
         end
 
+        # @param [Hash] hash
+        #
+        # @return [Buff::Config::JSON]
+        def from_hash(hash)
+          new.from_hash(hash)
+        end
+
         # @param [String] path
         #
         # @raise [Buff::Errors::ConfigNotFound]
