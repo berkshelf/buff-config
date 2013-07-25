@@ -20,6 +20,14 @@ describe Buff::Config::JSON do
       end
     end
 
+    describe "::from_hash" do
+      let(:hash) { JSON.parse(json) }
+
+      it "returns an instance of the inheriting class" do
+        expect(subject.from_hash(hash)).to be_a(subject)
+      end
+    end
+
     describe "::from_json" do
       it "returns an instance of the inheriting class" do
         expect(subject.from_json(json)).to be_a(subject)
