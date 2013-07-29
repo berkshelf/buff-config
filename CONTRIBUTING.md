@@ -10,11 +10,11 @@ Install the latest version of [Bundler](http://gembundler.com)
 
 Clone the project
 
-    $ git clone git://github.com/RiotGames/buff-ruby_engine.git
+    $ git clone git://github.com/RiotGames/buff-config.git
 
 and run:
 
-    $ cd buff-ruby_engine
+    $ cd buff-config
     $ bundle install
 
 Bundler will install all gems and their dependencies required for testing and developing.
