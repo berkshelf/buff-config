@@ -32,5 +32,6 @@ Or install it yourself as:
 # Authors and Contributors
 
 * Jamie Winsor (<jamie@vialstudios.com>)
+* Kyle Allan (<kallan@riotgames.com>)
 
 Thank you to all of our [Contributors](https://github.com/RiotGames/buff-config/graphs/contributors), testers, and users.
