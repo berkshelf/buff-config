@@ -10,15 +10,15 @@ module Buff
           # @param [String] contents
           #
           # @return [Hash]
-          def parse(contents)
-            self.new(contents).send(:attributes)
+          def parse(contents, path=nil)
+            self.new(contents, path).send(:attributes)
           end
         end
 
         # @param [String] contents
-        def initialize(contents)
+        def initialize(contents, path="(buff-config)")
           @attributes = Hash.new
-          instance_eval(contents)
+          instance_eval(contents, path)
         rescue Exception => ex
           raise Errors::InvalidConfig, ex
         end
@@ -57,7 +57,7 @@ module Buff
         def from_file(path)
           path = File.expand_path(path)
           contents = File.read(path)
-          new(path).from_ruby(contents)
+          new(path).from_ruby(contents, path)
         rescue TypeError, Errno::ENOENT, Errno::EISDIR
           raise Errors::ConfigNotFound, "No configuration found at: '#{path}'"
         end
@@ -93,14 +93,14 @@ module Buff
 
       def initialize(path = nil, options = {})
         super
-        from_ruby(File.read(path)) if path && File.exists?(path)
+        from_ruby(File.read(path), path) if path && File.exists?(path)
       end
 
       # @raise [Buff::Errors::InvalidConfig]
       #
       # @return [Buff::Config::Ruby]
-      def from_ruby(contents)
-        hash = Buff::Config::Ruby::Evaluator.parse(contents)
+      def from_ruby(contents, path=nil)
+        hash = Buff::Config::Ruby::Evaluator.parse(contents, path)
         mass_assign(hash)
         self
       end
