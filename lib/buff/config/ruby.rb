@@ -8,15 +8,18 @@ module Buff
           # Parse the contents of the Ruby file into a Hash.
           #
           # @param [String] contents
+          # @param [Object] context the parent Config object
           #
           # @return [Hash]
-          def parse(contents)
-            self.new(contents).send(:attributes)
+          def parse(contents, context=nil)
+            self.new(contents, context).send(:attributes)
           end
         end
 
         # @param [String] contents
-        def initialize(contents)
+        # @param [Object] context
+        def initialize(contents, context=nil)
+          @context = context
           @attributes = Hash.new
           instance_eval(contents)
         rescue Exception => ex
@@ -31,6 +34,8 @@ module Buff
         def method_missing(m, *args, &block)
           if args.size > 0
             attributes[m.to_sym] = (args.length == 1) ? args[0] : args
+          elsif @context && @context.respond_to?(m)
+            @context.send(m, *args, &block)
           else
             super
           end
@@ -100,7 +105,7 @@ module Buff
       #
       # @return [Buff::Config::Ruby]
       def from_ruby(contents)
-        hash = Buff::Config::Ruby::Evaluator.parse(contents)
+        hash = Buff::Config::Ruby::Evaluator.parse(contents, self)
         mass_assign(hash)
         self
       end
