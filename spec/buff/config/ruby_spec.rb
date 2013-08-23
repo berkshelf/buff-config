@@ -7,6 +7,7 @@ describe Buff::Config::Ruby do
       log_level       :info
       log_location    STDOUT
       cookbook_path   ['cookbooks']
+      knife[:foo] = 'bar'
     )
   end
 
@@ -16,6 +17,7 @@ describe Buff::Config::Ruby do
       attribute :log_location
       attribute :node_name, default: 'bacon'
       attribute :cookbook_path
+      attribute :knife, default: {}
     end
   end
 
@@ -34,6 +36,7 @@ describe Buff::Config::Ruby do
         expect(config[:log_location]).to eq(STDOUT)
         expect(config[:node_name]).to eq('bacon')
         expect(config[:cookbook_path]).to eq(['cookbooks'])
+        expect(config[:knife][:foo]).to eq('bar')
       end
     end
 
