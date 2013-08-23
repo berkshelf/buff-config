@@ -8,20 +8,24 @@ module Buff
           # Parse the contents of the Ruby file into a Hash.
           #
           # @param [String] contents
+          # @param [String] path file that should be used as __FILE__
+          #   during eval
           # @param [Object] context the parent Config object
           #
           # @return [Hash]
-          def parse(contents, context=nil)
-            self.new(contents, context).send(:attributes)
+          def parse(contents, path=nil, context=nil)
+            self.new(contents, path, context).send(:attributes)
           end
         end
 
         # @param [String] contents
+        # @param [String] path
         # @param [Object] context
-        def initialize(contents, context=nil)
+        def initialize(contents, path=nil, context=nil)
+          path ||= "(buff-config)"
           @context = context
           @attributes = Hash.new
-          instance_eval(contents)
+          instance_eval(contents, path)
         rescue Exception => ex
           raise Errors::InvalidConfig, ex
         end
@@ -47,11 +51,12 @@ module Buff
       end
 
       class << self
-        # @param [String] data
+        # @param [String] contents
+        # @param [String] path
         #
         # @return [Buff::Config::Ruby]
-        def from_ruby(contents)
-          new.from_ruby(contents)
+        def from_ruby(contents, path=nil)
+          new.from_ruby(contents, path)
         end
 
         # @param [String] path
@@ -62,7 +67,7 @@ module Buff
         def from_file(path)
           path = File.expand_path(path)
           contents = File.read(path)
-          new(path).from_ruby(contents)
+          new(path).from_ruby(contents, path)
         rescue TypeError, Errno::ENOENT, Errno::EISDIR
           raise Errors::ConfigNotFound, "No configuration found at: '#{path}'"
         end
@@ -98,14 +103,14 @@ module Buff
 
       def initialize(path = nil, options = {})
         super
-        from_ruby(File.read(path)) if path && File.exists?(path)
+        from_ruby(File.read(path), path) if path && File.exists?(path)
       end
 
       # @raise [Buff::Errors::InvalidConfig]
       #
       # @return [Buff::Config::Ruby]
-      def from_ruby(contents)
-        hash = Buff::Config::Ruby::Evaluator.parse(contents, self)
+      def from_ruby(contents, path=nil)
+        hash = Buff::Config::Ruby::Evaluator.parse(contents, path, self)
         mass_assign(hash)
         self
       end
