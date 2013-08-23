@@ -4,10 +4,12 @@ require 'buff/config/ruby'
 describe Buff::Config::Ruby do
   let(:ruby) do
     %(
+      current_dir = File.dirname(__FILE__)
       log_level       :info
       log_location    STDOUT
       cookbook_path   ['cookbooks']
       knife[:foo] = 'bar'
+      knife[:key] = "\#{current_dir}/key.pem"
     )
   end
 
@@ -37,6 +39,12 @@ describe Buff::Config::Ruby do
         expect(config[:node_name]).to eq('bacon')
         expect(config[:cookbook_path]).to eq(['cookbooks'])
         expect(config[:knife][:foo]).to eq('bar')
+      end
+
+      it 'properly sets the calling file' do
+        config = subject.from_ruby(ruby, '/home/annie/.chef/knife.rb')
+
+        expect(config[:knife][:key]).to eq ('/home/annie/.chef/key.pem')
       end
     end
 
