@@ -8,15 +8,21 @@ module Buff
           # Parse the contents of the Ruby file into a Hash.
           #
           # @param [String] contents
+          # @param [String] path file that should be used as __FILE__
+          #   during eval
+          # @param [Object] caller the parent Config object
           #
           # @return [Hash]
-          def parse(contents, path=nil)
-            self.new(contents, path).send(:attributes)
+          def parse(contents, path=nil, caller=nil)
+            self.new(contents, path, caller).send(:attributes)
           end
         end
 
         # @param [String] contents
-        def initialize(contents, path="(buff-config)")
+        # @param [String] path
+        # @param [Object] caller
+        def initialize(contents, path="(buff-config)", caller=nil)
+          @caller = caller
           @attributes = Hash.new
           instance_eval(contents, path)
         rescue Exception => ex
@@ -31,6 +37,8 @@ module Buff
         def method_missing(m, *args, &block)
           if args.size > 0
             attributes[m.to_sym] = (args.length == 1) ? args[0] : args
+          elsif @caller && @caller.respond_to?(m)
+            @caller.send(m, *args, &block)
           else
             super
           end
@@ -100,7 +108,7 @@ module Buff
       #
       # @return [Buff::Config::Ruby]
       def from_ruby(contents, path=nil)
-        hash = Buff::Config::Ruby::Evaluator.parse(contents, path)
+        hash = Buff::Config::Ruby::Evaluator.parse(contents, path, self)
         mass_assign(hash)
         self
       end
