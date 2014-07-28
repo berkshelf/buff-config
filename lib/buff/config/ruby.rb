@@ -35,19 +35,25 @@ module Buff
           Buff::Config::Ruby.platform_specific_path(path)
         end
 
-        def method_missing(m, *args, &block)
-          if args.size > 0
-            attributes[m.to_sym] = (args.length == 1) ? args[0] : args
-          elsif @context && @context.respond_to?(m)
-            @context.send(m, *args, &block)
-          else
-            super
-          end
-        end
-
         private
 
           attr_reader :attributes
+
+          def method_missing(m, *args, &block)
+            if args.size > 0
+              attributes[m.to_sym] = (args.length == 1) ? args[0] : args
+            elsif @context && @context.respond_to?(m)
+              @context.send(m, *args, &block)
+            else
+              Proxy.new
+            end
+          end
+
+          class Proxy
+            def method_missing(m, *args, &block)
+              self
+            end
+          end
       end
 
       class << self
