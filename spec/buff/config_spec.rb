@@ -28,7 +28,7 @@ describe Buff::Config::Base do
     end
 
     it "contains just the sliced elements" do
-      expect(@sliced).to have(1).item
+      expect(@sliced.size).to eq(1)
     end
   end
 end
