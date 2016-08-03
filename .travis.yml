@@ -1,7 +1,18 @@
-script: "bundle exec thor spec"
 language: ruby
-rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1
-  - jruby-19mode
+cache:
+  - bundler
+dist: trusty
+branches:
+  only:
+    - master
+before_install:
+  - gem update --system
+  - gem install bundler
+script: "bundle exec thor spec"
+matrix:
+  include:
+  - rvm: 2.1.10
+  - rvm: 2.2.5
+  - rvm: 2.3.1
+  - rvm: ruby-head
+  - rvm: jruby-head
