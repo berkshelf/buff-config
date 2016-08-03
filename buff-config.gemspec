@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.2.0"
 
-  spec.add_dependency "varia_model", "~> 0.4"
-  spec.add_dependency "buff-extensions", "~> 1.0"
+  spec.add_dependency "varia_model", "~> 0.6"
+  spec.add_dependency "buff-extensions", "~> 2.0"
 
   spec.add_development_dependency "buff-ruby_engine"
   spec.add_development_dependency "thor"
