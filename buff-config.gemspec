@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 1.9.2"
 
   spec.add_dependency "varia_model", "~> 0.4"
-  spec.add_dependency "buff-extensions", "~> 1.0"
+  spec.add_dependency "buff-extensions", "~> 2.0"
 
   spec.add_development_dependency "buff-ruby_engine", "~> 0.1"
   spec.add_development_dependency "thor", "~> 0.18.0"
