@@ -51,7 +51,7 @@ describe Buff::Config::Ruby do
     describe '::from_file' do
       let(:filepath) { tmp_path.join('test_config.rb').to_s }
 
-      before { File.stub(:read).with(filepath).and_return(ruby) }
+      before { allow(File).to receive(:read).with(filepath).and_return(ruby) }
 
       it 'returns an instance of the inheriting class' do
         expect(subject.from_file(filepath)).to be_a(subject)
@@ -62,7 +62,7 @@ describe Buff::Config::Ruby do
       end
 
       context 'given a filepath that does not exist' do
-        before { File.stub(:read).and_raise(Errno::ENOENT) }
+        before { allow(File).to receive(:read).and_raise(Errno::ENOENT) }
 
         it 'raises a Buff::Errors::ConfigNotFound error' do
           expect {
@@ -118,7 +118,7 @@ describe Buff::Config::Ruby do
   describe '#reload' do
     before do
       subject.path = 'foo/bar.rb'
-      File.stub(:read).and_return(ruby)
+      allow(File).to receive(:read).and_return(ruby)
     end
 
     it 'returns self' do
