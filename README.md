@@ -1,6 +1,6 @@
 # Buff::Config
-[![Gem Version](https://badge.fury.io/rb/buff-config.png)](http://badge.fury.io/rb/buff-config)
-[![Build Status](https://travis-ci.org/RiotGames/buff-config.png?branch=master)](https://travis-ci.org/RiotGames/buff-config)
+[![Gem Version](https://badge.fury.io/rb/buff-config.svg)](http://badge.fury.io/rb/buff-config)
+[![Build Status](https://travis-ci.org/berkshelf/buff-config.svg?branch=master)](https://travis-ci.org/berkshelf/buff-config)
 
 A simple configuration class
 
