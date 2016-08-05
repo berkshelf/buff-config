@@ -1,6 +1,6 @@
 # Buff::Config
-[![Gem Version](https://badge.fury.io/rb/buff-config.svg)](http://badge.fury.io/rb/buff-config)
-[![Build Status](https://travis-ci.org/berkshelf/buff-config.svg?branch=master)](https://travis-ci.org/berkshelf/buff-config)
+
+[![Gem Version](https://badge.fury.io/rb/buff-config.svg)](http://badge.fury.io/rb/buff-config) [![Build Status](https://travis-ci.org/berkshelf/buff-config.svg?branch=master)](https://travis-ci.org/berkshelf/buff-config)
 
 A simple configuration class
 
@@ -8,30 +8,38 @@ A simple configuration class
 
 Add this line to your application's Gemfile:
 
-    gem 'buff-config'
+```ruby
+gem 'buff-config'
+```
 
 And then execute:
 
-    $ bundle
+```sh
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install buff-config
+```sh
+$ gem install buff-config
+```
 
 ## Usage
 
-    require 'buff/config/json'
+```ruby
+require 'buff/config/json'
 
-    class MyConfig < Buff::Config::JSON
-      attribute 'chef.chef_server_url'
-    end
+class MyConfig < Buff::Config::JSON
+  attribute 'chef.chef_server_url'
+end
 
-    my_config = MyConfig.new
-    my_config.chef.chef_server_url #=> nil
+my_config = MyConfig.new
+my_config.chef.chef_server_url #=> nil
+```
 
 # Authors and Contributors
 
-* Jamie Winsor (<jamie@vialstudios.com>)
-* Kyle Allan (<kallan@riotgames.com>)
+- Jamie Winsor ([jamie@vialstudios.com](mailto:jamie@vialstudios.com))
+- Kyle Allan ([kallan@riotgames.com](mailto:kallan@riotgames.com))
 
-Thank you to all of our [Contributors](https://github.com/RiotGames/buff-config/graphs/contributors), testers, and users.
+Thank you to all of our [Contributors](https://github.com/berkshelf/buff-config/graphs/contributors), testers, and users.
