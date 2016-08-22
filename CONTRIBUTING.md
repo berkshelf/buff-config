@@ -4,7 +4,7 @@
 
 ### Install prerequisites
 
-Install the latest version of [Bundler](http://gembundler.com)
+Install the latest version of [Bundler](http://bundler.io/)
 
 ```sh
 $ gem install bundler
