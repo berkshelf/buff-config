@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jamie@vialstudios.com", "kallan@riotgames.com"]
   spec.description   = %q{A simple configuration class}
   spec.summary       = spec.description
-  spec.homepage      = "https://github.com/RiotGames/buff-config"
+  spec.homepage      = "https://github.com/berkshelf/buff-config"
   spec.license       = "Apache 2.0"
 
   spec.files         = `git ls-files`.split($/)
